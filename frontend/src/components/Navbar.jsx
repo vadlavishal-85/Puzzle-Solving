@@ -8,11 +8,8 @@ function Navbar({ darkMode, toggleTheme }) {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: '8-Puzzle', path: '/8-puzzle' },
     { name: 'Maze', path: '/maze' },
     { name: 'Sudoku', path: '/sudoku' },
-    { name: 'Compare', path: '/comparison' },
-    { name: 'Guide', path: '/guide' },
     { name: 'Learn', path: '/learn' },
   ];
 
@@ -27,7 +24,7 @@ function Navbar({ darkMode, toggleTheme }) {
               <Brain size={24} />
             </div>
             <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary hidden sm:block">
-              AI Puzzle Studio
+              Puzzle Studio
             </span>
           </Link>
 

@@ -24,16 +24,13 @@ function About() {
           <ul className="space-y-3">
             <li className="flex items-center text-slate-700 dark:text-slate-300">
               <span className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold mr-4">1</span>
-              Student Name - Lead Developer
+              Student Name - Vadla Vishal
             </li>
             <li className="flex items-center text-slate-700 dark:text-slate-300">
               <span className="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center font-bold mr-4">2</span>
-              Student Name - AI Researcher
+              Student Name - Krishna Biradar
             </li>
-            <li className="flex items-center text-slate-700 dark:text-slate-300">
-              <span className="w-8 h-8 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold mr-4">3</span>
-              Student Name - UI/UX Designer
-            </li>
+            
           </ul>
         </div>
       </div>
@@ -43,14 +40,13 @@ function About() {
           <Code className="mr-3 text-slate-800 dark:text-slate-100" /> Technology Stack
         </h2>
         <p className="text-slate-600 dark:text-slate-400 mb-4">
-          This project was built without using any external pre-built AI libraries (like TensorFlow or PyTorch). All search algorithms and data structures were implemented from scratch to demonstrate fundamental understanding.
+          
         </p>
         <div className="flex flex-wrap gap-2">
           <span className="px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-full text-sm font-semibold">React.js</span>
           <span className="px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-full text-sm font-semibold">Tailwind CSS v4</span>
           <span className="px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-full text-sm font-semibold">JavaScript (ES6+)</span>
-          <span className="px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-full text-sm font-semibold">FastAPI (Python Backend)</span>
-          <span className="px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-full text-sm font-semibold">Recharts</span>
+          
         </div>
       </div>
     </div>

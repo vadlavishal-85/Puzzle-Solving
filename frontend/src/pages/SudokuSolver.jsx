@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Play, CheckCircle2, AlertTriangle, FastForward } from 'lucide-react';
 import { solveSudoku } from '../csp/sudokuBacktracking';
 

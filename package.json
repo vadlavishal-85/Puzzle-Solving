@@ -1,18 +1,13 @@
 {
   "name": "cfai",
   "version": "1.0.0",
-  "description": "CFAI - Complete Foundation in AI with Frontend and Backend",
+  "description": "CFAI - Complete Foundation in AI with Frontend",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && python main.py",
+    "dev": "cd frontend && npm run dev",
     "build": "cd frontend && npm run build",
     "preview": "cd frontend && npm run preview",
     "lint": "cd frontend && npm run lint",
-    "install:all": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt"
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
+    "install:all": "npm install && cd frontend && npm install"
   }
 }

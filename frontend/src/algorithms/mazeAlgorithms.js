@@ -98,7 +98,6 @@ export const solveMaze = (grid, start, goal, algorithm) => {
         else if (algorithm === 'bfs') queue.push(nextState);
         else if (algorithm === 'ucs') pq.enqueue(nextState, newCost);
         else if (algorithm === 'greedy') pq.enqueue(nextState, manhattan(nr, nc, goalR, goalC));
-        else if (algorithm === 'astar') pq.enqueue(nextState, newCost + manhattan(nr, nc, goalR, goalC));
       }
     }
     

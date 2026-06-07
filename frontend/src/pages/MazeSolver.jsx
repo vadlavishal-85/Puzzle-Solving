@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Play, RotateCcw, MousePointer2, AlertTriangle, Settings, RefreshCw } from 'lucide-react';
+import { useState } from 'react';
+import { Play, AlertTriangle, RefreshCw } from 'lucide-react';
 import { solveMaze } from '../algorithms/mazeAlgorithms';
 
 const ROWS = 15;
@@ -16,7 +16,7 @@ function MazeSolver() {
   const [mode, setMode] = useState('draw_wall');
   const [isMouseDown, setIsMouseDown] = useState(false);
   
-  const [algorithm, setAlgorithm] = useState('astar');
+  const [algorithm, setAlgorithm] = useState('bfs');
   const [isSolving, setIsSolving] = useState(false);
   
   const [visited, setVisited] = useState(new Set());
@@ -114,7 +114,7 @@ function MazeSolver() {
             setIsSolving(false);
           }
         }
-      }, 5); // Fast animation for maze
+      }, 40); // Average animation for maze
     }, 50);
   };
 
@@ -169,7 +169,7 @@ function MazeSolver() {
           </div>
 
           <div className="glass-card p-6">
-            <h3 className="font-bold mb-4 uppercase tracking-wider text-sm text-slate-500">AI Search</h3>
+            <h3 className="font-bold mb-4 uppercase tracking-wider text-sm text-slate-500">Algorithm</h3>
             <select 
               value={algorithm}
               onChange={(e) => setAlgorithm(e.target.value)}
@@ -180,7 +180,6 @@ function MazeSolver() {
               <option value="dfs">Depth First Search</option>
               <option value="ucs">Uniform Cost Search</option>
               <option value="greedy">Greedy Search</option>
-              <option value="astar">A* Search</option>
             </select>
             
             <button 
@@ -227,9 +226,9 @@ function MazeSolver() {
                   if (isWall) bgColor = 'bg-slate-800 dark:bg-slate-200 shadow-inner scale-105';
                   else if (isStart) bgColor = 'bg-primary z-10 animate-pulse ring-4 ring-primary/30 rounded-md';
                   else if (isGoalPos) bgColor = 'bg-success z-10 ring-4 ring-success/30 rounded-md';
-                  else if (isPath) bgColor = 'bg-accent/80 transition-all duration-300 scale-90 rounded-sm';
-                  else if (isVisited) bgColor = 'bg-secondary/40 transition-all duration-500 scale-95';
-                  else if (isFrontier) bgColor = 'bg-secondary/20 transition-all duration-100 scale-95';
+                  else if (isPath) bgColor = 'bg-emerald-500 dark:bg-emerald-400 transition-all duration-300 scale-90 rounded-sm';
+                  else if (isVisited) bgColor = 'bg-sky-500 dark:bg-sky-400 transition-all duration-500 scale-95';
+                  else if (isFrontier) bgColor = 'bg-sky-300 dark:bg-sky-200 transition-all duration-100 scale-95';
 
                   return (
                     <div
