@@ -40,6 +40,59 @@ const INITIAL_HARD = [
 
 const INITIAL_EMPTY = Array.from({length: 9}, () => Array(9).fill(0));
 
+const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+
+const isSafeSudoku = (board, row, col, num) => {
+  for (let i = 0; i < 9; i++) {
+    if (board[row][i] === num) return false;
+    if (board[i][col] === num) return false;
+  }
+  const startRow = Math.floor(row / 3) * 3;
+  const startCol = Math.floor(col / 3) * 3;
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      if (board[startRow + r][startCol + c] === num) return false;
+    }
+  }
+  return true;
+};
+
+const fillRandomSudoku = (board) => {
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      if (board[row][col] === 0) {
+        const candidates = shuffleArray([1,2,3,4,5,6,7,8,9]);
+        for (const num of candidates) {
+          if (isSafeSudoku(board, row, col, num)) {
+            board[row][col] = num;
+            if (fillRandomSudoku(board)) return true;
+            board[row][col] = 0;
+          }
+        }
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+const generateRandomBoard = () => {
+  const board = Array.from({ length: 9 }, () => Array(9).fill(0));
+  fillRandomSudoku(board);
+  const holes = 46;
+  const result = board.map(row => [...row]);
+  let removed = 0;
+  while (removed < holes) {
+    const row = Math.floor(Math.random() * 9);
+    const col = Math.floor(Math.random() * 9);
+    if (result[row][col] !== 0) {
+      result[row][col] = 0;
+      removed += 1;
+    }
+  }
+  return result;
+};
+
 function SudokuSolver() {
   const [originalBoard, setOriginalBoard] = useState(INITIAL_EASY);
   const [board, setBoard] = useState(INITIAL_EASY);
@@ -105,7 +158,7 @@ function SudokuSolver() {
       }
 
       let i = 0;
-      const animationSpeed = 5; 
+      const animationSpeed = 25; 
       
       const animate = setInterval(() => {
         if (i < result.history.length) {
@@ -156,8 +209,8 @@ function SudokuSolver() {
         
         {/* Left Column: Board */}
         <div className="lg:col-span-7 flex justify-center">
-          <div className="glass-card p-6 md:p-8 rounded-3xl shadow-2xl relative w-full max-w-lg aspect-square bg-gradient-to-br from-slate-200 to-slate-300 dark:from-card-bg dark:to-slate-900">
-            <div className="grid grid-cols-9 gap-[2px] w-full h-full bg-slate-300 dark:bg-slate-600 border-[3px] border-slate-400 dark:border-slate-400">
+          <div className="glass-card p-4 md:p-6 rounded-3xl shadow-2xl relative w-full max-w-md aspect-square bg-gradient-to-br from-slate-200 to-slate-300 dark:from-card-bg dark:to-slate-900">
+            <div className="grid grid-cols-9 gap-[1px] w-full h-full bg-slate-300 dark:bg-slate-600 border-[3px] border-slate-400 dark:border-slate-400">
               {board.map((row, r) => 
                 row.map((val, c) => {
                   const isBoldBottom = r === 2 || r === 5;
@@ -183,7 +236,7 @@ function SudokuSolver() {
                       onChange={(e) => handleCellChange(r, c, e.target.value)}
                       disabled={isSolving || isOriginal}
                       className={`
-                        w-full h-full text-center text-xl md:text-2xl outline-none focus:bg-accent/20 text-slate-800 dark:text-slate-100
+                        w-full h-full text-center text-base md:text-xl outline-none focus:bg-accent/20 text-slate-800 dark:text-slate-100
                         ${bgClass}
                         ${isBoldBottom ? 'border-b-[3px] border-b-slate-500 dark:border-b-slate-400' : ''}
                         ${isBoldRight ? 'border-r-[3px] border-r-slate-500 dark:border-r-slate-400' : ''}
@@ -209,6 +262,17 @@ function SudokuSolver() {
                 </button>
                 <button onClick={() => loadDifficulty(INITIAL_HARD)} disabled={isSolving} className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-xl transition-all shadow-md active:scale-95 text-sm">
                   Hard
+                </button>
+                <button onClick={() => {
+                  const randomBoard = generateRandomBoard();
+                  setOriginalBoard(randomBoard);
+                  setBoard(randomBoard);
+                  setIsSolved(false);
+                  setStats(null);
+                  setErrorMsg("");
+                  setActiveCell(null);
+                }} disabled={isSolving} className="bg-slate-900 text-white hover:bg-slate-700 py-2 rounded-xl transition-colors font-semibold text-sm">
+                  Random Puzzle
                 </button>
                 <button onClick={clearBoard} disabled={isSolving} className="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 py-2 rounded-xl transition-colors font-semibold text-sm">
                   Clear Board

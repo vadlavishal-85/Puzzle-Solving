@@ -179,7 +179,9 @@ function MazeSolver() {
               <option value="bfs">Breadth First Search</option>
               <option value="dfs">Depth First Search</option>
               <option value="ucs">Uniform Cost Search</option>
-              <option value="greedy">Greedy Search</option>
+              <option value="greedy">Greedy Best-First</option>
+              <option value="astar">A* Search</option>
+              <option value="bidirectional">Bidirectional Search</option>
             </select>
             
             <button 
