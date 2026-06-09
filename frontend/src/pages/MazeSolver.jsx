@@ -69,6 +69,7 @@ function MazeSolver() {
   const [path, setPath] = useState(new Set());
   const [stats, setStats] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const [speed, setSpeed] = useState(1);
 
   const clearVisualization = () => {
     setVisited(new Set());
@@ -125,8 +126,10 @@ function MazeSolver() {
 
       const { history, path: finalPath, nodesExpanded, time, depth } = result;
       
-      // Animate search
+      // Animate search with speed control
       let i = 0;
+      const animationDelay = Math.max(10, 40 / speed);
+      const pathDelay = Math.max(10, 30 / speed);
       const animate = setInterval(() => {
         if (i < history.length) {
           const step = history[i];
@@ -153,13 +156,13 @@ function MazeSolver() {
                 setIsSolving(false);
                 setStats({ nodesExpanded, time: time.toFixed(2), depth });
               }
-            }, 30);
+            }, pathDelay);
           } else {
             setErrorMsg("No path exists to the goal.");
             setIsSolving(false);
           }
         }
-      }, 40); // Average animation for maze
+      }, animationDelay);
     }, 50);
   };
 
@@ -228,6 +231,27 @@ function MazeSolver() {
               <option value="astar">A* Search</option>
               <option value="bidirectional">Bidirectional Search</option>
             </select>
+            
+            {/* Speed Slider */}
+            <div className="mb-4">
+              <label className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase block mb-2">
+                Visualization Speed: {speed.toFixed(1)}x
+              </label>
+              <input 
+                type="range" 
+                min="0.25" 
+                max="2" 
+                step="0.25" 
+                value={speed}
+                onChange={(e) => setSpeed(parseFloat(e.target.value))}
+                disabled={isSolving}
+                className="w-full cursor-pointer accent-secondary"
+              />
+              <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <span>0.25x</span>
+                <span>2x</span>
+              </div>
+            </div>
             
             {/* Complexity Info */}
             <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 mb-4 text-xs">
