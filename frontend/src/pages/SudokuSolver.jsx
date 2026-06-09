@@ -102,6 +102,7 @@ function SudokuSolver() {
   const [stats, setStats] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [isSolved, setIsSolved] = useState(false);
+  const [speed, setSpeed] = useState(1);
 
   const handleCellChange = (r, c, value) => {
     if (isSolving) return;
@@ -158,7 +159,7 @@ function SudokuSolver() {
       }
 
       let i = 0;
-      const animationSpeed = 80; 
+      const animationSpeed = Math.max(10, 80 / speed); 
       
       const animate = setInterval(() => {
         if (i < result.history.length) {
@@ -277,6 +278,27 @@ function SudokuSolver() {
                 <button onClick={clearBoard} disabled={isSolving} className="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 py-2 rounded-xl transition-colors font-semibold text-sm">
                   Clear Board
                 </button>
+             </div>
+             
+             {/* Speed Slider */}
+             <div className="mb-4">
+               <label className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase block mb-2">
+                 Visualization Speed: {speed.toFixed(1)}x
+               </label>
+               <input 
+                 type="range" 
+                 min="0.25" 
+                 max="2" 
+                 step="0.25" 
+                 value={speed}
+                 onChange={(e) => setSpeed(parseFloat(e.target.value))}
+                 disabled={isSolving}
+                 className="w-full cursor-pointer accent-accent"
+               />
+               <div className="flex justify-between text-xs text-slate-500 mt-1">
+                 <span>0.25x</span>
+                 <span>2x</span>
+               </div>
              </div>
              
              <button 
