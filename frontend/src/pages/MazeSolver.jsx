@@ -1,11 +1,56 @@
 import { useState } from 'react';
-import { Play, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Play, AlertTriangle, RefreshCw, Info } from 'lucide-react';
 import { solveMaze } from '../algorithms/mazeAlgorithms';
 
 const ROWS = 15;
 const COLS = 20;
 
 const createEmptyGrid = () => Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+
+const ALGORITHM_COMPLEXITY = {
+  bfs: {
+    name: 'Breadth First Search',
+    time: 'O(V + E)',
+    space: 'O(V)',
+    description: 'Explores all nodes at current depth before moving deeper. Guarantees shortest path.',
+    bestFor: 'Unweighted graphs, shortest path'
+  },
+  dfs: {
+    name: 'Depth First Search',
+    time: 'O(V + E)',
+    space: 'O(V)',
+    description: 'Explores as far as possible along each branch before backtracking.',
+    bestFor: 'Memory-limited scenarios, general search'
+  },
+  ucs: {
+    name: 'Uniform Cost Search',
+    time: 'O((V + E) log V)',
+    space: 'O(V)',
+    description: 'Explores nodes in order of their path cost. Guarantees optimal path with non-negative costs.',
+    bestFor: 'Weighted graphs, optimal path'
+  },
+  greedy: {
+    name: 'Greedy Best-First',
+    time: 'O((V + E) log V)',
+    space: 'O(V)',
+    description: 'Uses heuristic to estimate distance to goal. Fast but may not find optimal path.',
+    bestFor: 'Speed-prioritized search'
+  },
+  astar: {
+    name: 'A* Search',
+    time: 'O((V + E) log V)',
+    space: 'O(V)',
+    description: 'Combines actual cost and heuristic estimate. Optimal and efficient with good heuristic.',
+    bestFor: 'Balanced optimal and fast search'
+  },
+  bidirectional: {
+    name: 'Bidirectional Search',
+    time: 'O(b^(d/2))',
+    space: 'O(b^(d/2))',
+    description: 'Searches from both start and goal simultaneously, meeting in the middle.',
+    bestFor: 'Significantly faster on large spaces'
+  }
+};
 
 function MazeSolver() {
   const [grid, setGrid] = useState(createEmptyGrid());
@@ -184,6 +229,19 @@ function MazeSolver() {
               <option value="bidirectional">Bidirectional Search</option>
             </select>
             
+            {/* Complexity Info */}
+            <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3 mb-4 text-xs">
+              <div className="flex items-center gap-2 mb-2">
+                <Info className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                <span className="font-semibold text-slate-700 dark:text-slate-300">{ALGORITHM_COMPLEXITY[algorithm].name}</span>
+              </div>
+              <div className="space-y-1 text-slate-600 dark:text-slate-400">
+                <div><span className="font-medium">Time:</span> {ALGORITHM_COMPLEXITY[algorithm].time}</div>
+                <div><span className="font-medium">Space:</span> {ALGORITHM_COMPLEXITY[algorithm].space}</div>
+                <div className="mt-2 italic">{ALGORITHM_COMPLEXITY[algorithm].description}</div>
+              </div>
+            </div>
+            
             <button 
               onClick={handleSolve} 
               disabled={isSolving}
@@ -194,11 +252,41 @@ function MazeSolver() {
           </div>
 
           {stats && (
-            <div className="glass-card p-6 bg-gradient-to-br from-secondary/20 to-transparent border border-secondary/30">
-              <h3 className="font-bold mb-3 uppercase tracking-wider text-sm text-slate-800 dark:text-slate-200">Results</h3>
-              <div className="flex justify-between mb-2"><span className="opacity-70">Nodes Expanded:</span> <strong>{stats.nodesExpanded}</strong></div>
-              <div className="flex justify-between mb-2"><span className="opacity-70">Path Length:</span> <strong>{stats.depth}</strong></div>
-              <div className="flex justify-between"><span className="opacity-70">Time:</span> <strong>{stats.time} ms</strong></div>
+            <div className="glass-card p-4 bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-slate-700/50 rounded-xl shadow-lg">
+              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-300 mb-3 px-1">Results</h3>
+              
+              {/* Main Metrics Grid - 3 Equal Cards */}
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {/* Nodes Expanded */}
+                <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border border-cyan-500/40 rounded-lg p-3 text-center">
+                  <div className="text-xs font-semibold text-cyan-400 uppercase tracking-wide mb-1">Nodes</div>
+                  <div className="text-xl font-bold text-cyan-300">{stats.nodesExpanded}</div>
+                </div>
+                
+                {/* Path Length */}
+                <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 border border-emerald-500/40 rounded-lg p-3 text-center">
+                  <div className="text-xs font-semibold text-emerald-400 uppercase tracking-wide mb-1">Path</div>
+                  <div className="text-xl font-bold text-emerald-300">{stats.depth}</div>
+                </div>
+                
+                {/* Execution Time */}
+                <div className="bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 rounded-lg p-3 text-center">
+                  <div className="text-xs font-semibold text-amber-400 uppercase tracking-wide mb-1">Time</div>
+                  <div className="text-xl font-bold text-amber-300">{stats.time}ms</div>
+                </div>
+              </div>
+              
+              {/* Complexity Info - 2 Equal Cards */}
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-slate-700/40 border border-slate-600/50 rounded-lg p-2.5 text-center">
+                  <div className="text-xs text-slate-400 mb-1">Time Complexity</div>
+                  <div className="font-bold text-slate-200 text-sm">{ALGORITHM_COMPLEXITY[algorithm].time}</div>
+                </div>
+                <div className="bg-slate-700/40 border border-slate-600/50 rounded-lg p-2.5 text-center">
+                  <div className="text-xs text-slate-400 mb-1">Space Complexity</div>
+                  <div className="font-bold text-slate-200 text-sm">{ALGORITHM_COMPLEXITY[algorithm].space}</div>
+                </div>
+              </div>
             </div>
           )}
         </div>
