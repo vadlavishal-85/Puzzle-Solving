@@ -4,42 +4,42 @@ function LearningCenter() {
   const algorithms = [
     {
       name: 'Breadth First Search (BFS)',
-      definition: 'Explores the search tree level by level. It expands all children of a node before moving deeper.',
+      definition: 'In the maze solver, BFS expands every reachable cell one step at a time from the start. It visits all cells at distance d before moving to distance d+1, so the first time it reaches the goal it has found the shortest path in an unweighted maze.',
       advantages: ['Complete', 'Optimal for unweighted graphs (finds shortest path)'],
       disadvantages: ['High Memory Usage (must store all nodes in memory)'],
       formula: 'No specific formula (Queue / FIFO)'
     },
     {
       name: 'Depth First Search (DFS)',
-      definition: 'Explores the search tree by diving as deep as possible along each branch before backtracking.',
+      definition: 'DFS follows one path as far as it can go before backtracking. In the maze project it pushes new neighbor cells onto a stack, so it can explore deep corridors quickly but may not find the shortest route.',
       advantages: ['Low Memory Usage', 'Simple to implement recursively'],
       disadvantages: ['Not guaranteed optimal', 'Can get stuck in infinite loops without cycle checking'],
       formula: 'No specific formula (Stack / LIFO)'
     },
     {
       name: 'Uniform Cost Search (UCS)',
-      definition: 'Expands the node with the lowest path cost g(n) from the start node.',
+      definition: 'UCS always expands the maze cell with the lowest total travel cost from the start. In this grid, every step costs the same, so UCS behaves like BFS but is written using a priority queue so it can handle weighted mazes too.',
       advantages: ['Complete', 'Optimal for any step-costs'],
       disadvantages: ['Can be slow if costs are identical (degenerates to BFS)'],
       formula: 'Cost Function: f(n) = g(n)'
     },
     {
       name: 'Greedy Best-First Search',
-      definition: 'Expands the node that appears to be closest to the goal, according to a heuristic function.',
+      definition: 'Greedy search chooses the next maze cell that looks closest to the goal according to a heuristic. It is fast because it uses predicted distance only, but it may take a non-optimal path or miss the goal if the heuristic is misleading.',
       advantages: ['Fast', 'Low Memory Usage relative to BFS'],
       disadvantages: ['Not optimal', 'Incomplete (can get stuck)'],
       formula: 'Cost Function: f(n) = h(n)'
     },
     {
       name: 'A* Search',
-      definition: 'Combines UCS and Greedy Search by expanding nodes with the lowest total estimated cost.',
+      definition: 'A* combines the actual path cost from the start with the heuristic estimate to the goal. In the maze solver it expands the cell with lowest g(n)+h(n), which balances exploration and goal-directed search for efficient optimal paths.',
       advantages: ['Complete', 'Optimal (if heuristic is admissible)'],
       disadvantages: ['High Memory usage'],
       formula: 'Cost Function: f(n) = g(n) + h(n)'
     },
     {
       name: 'Backtracking Search',
-      definition: 'A depth-first search strategy that assigns values to variables one by one and backtracks when constraints are violated.',
+      definition: 'In the Sudoku section, backtracking assigns digits to cells and reverses decisions when a constraint is violated. It explores the search space systematically until a valid solution is found, especially when paired with heuristics like MRV and forward checking.',
       advantages: ['Simple implementation', 'Will find a solution if one exists in CSPs'],
       disadvantages: ['Slow on very large search spaces without heuristics (like MRV or Forward Checking)'],
       formula: 'Recursive trial and error'
@@ -93,6 +93,23 @@ function LearningCenter() {
               <li><strong>Euclidean Distance:</strong> The straight-line distance from the current position to the maze exit.</li>
             </ul>
           </div>
+        </section>
+
+        {/* Maze Algorithm Section */}
+        <section className="glass-card p-8">
+          <h2 className="text-2xl font-bold mb-4 flex items-center text-accent">
+            <Code2 className="mr-3" /> Maze Search Algorithms in This Project
+          </h2>
+          <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+            In this maze visualizer, the grid is treated as a graph where each empty cell is a node and each adjacent move (up, down, left, right) is an edge. The search algorithms explore that graph to find a path from the start node to the goal node.
+          </p>
+          <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-3 ml-4 border-l-2 border-slate-300 dark:border-slate-700 pl-4">
+            <li><strong>BFS</strong> adds all reachable neighboring cells to a queue and processes them in order, guaranteeing the shortest path in an unweighted maze.</li>
+            <li><strong>DFS</strong> uses a stack-like strategy to follow one branch deeply, which is good for exploring corridors but not for finding shortest paths.</li>
+            <li><strong>UCS</strong> expands the lowest-cost path so far; with equal step cost it behaves like BFS, but it also supports weighted pathfinding in general.</li>
+            <li><strong>Greedy Search</strong> chooses the next cell closest to the goal by heuristic, making it fast but not always optimal.</li>
+            <li><strong>A*</strong> combines the path taken so far with the heuristic to balance optimality and efficiency, making it the best choice for shortest path search in the maze.</li>
+          </ul>
         </section>
 
         {/* Section 3 */}
