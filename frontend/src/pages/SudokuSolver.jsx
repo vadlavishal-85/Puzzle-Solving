@@ -158,7 +158,7 @@ function SudokuSolver() {
       }
 
       let i = 0;
-      const animationSpeed = 25; 
+      const animationSpeed = 80; 
       
       const animate = setInterval(() => {
         if (i < result.history.length) {
